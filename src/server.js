@@ -16,7 +16,8 @@ mongoose
   .catch((err) => {
     console.log("error connecting to the database", err.message);
   });
-
+//Pass in coming data, or formerly bodyParser module 
+app.use(express.json())
 //Routes
 app.use('/app/users', userRouter); 
 //start the server

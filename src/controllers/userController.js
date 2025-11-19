@@ -3,6 +3,7 @@ const { StatusCodes } = require("http-status-codes");
 const User = require("../models/User");
 //@desc - Register a new user
 //@route - POST /api/users/register
+//@Access - Public
 
 const registerUser = asyncHandler(async (req, res) => {
   //Get the payload

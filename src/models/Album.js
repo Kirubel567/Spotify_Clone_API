@@ -34,28 +34,18 @@ const albumSchema = new mongoose.Schema({
         type: Number, 
         default: 0, 
     }, 
-    likedAlbums:[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Album'
-        }
-    ], 
-    followedArtists:[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Artist'
-        }
-    ], 
-    followedPlaylists:[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Playlist'
-        }
-    ],
+    description:{
+        type: String, 
+        trim: true, 
+    },
+    isExplicit:{
+        type: Boolean, 
+        default: false, 
+    }, 
 }, {
     timestamps: true, 
 }); 
 
 //compile to form the model 
-const User = mongoose.model('User', albumSchema); 
-module.exports = User; 
+const Album = mongoose.model('Album', albumSchema); 
+module.exports = Album; 

@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
         default: 'https://cdn.pixabay.com/photo/2013/07/13/12/46/user-160319_1280.png'
     }, 
     isAdmin:{
-        type: String,  
+        type: Boolean,  
         default: false, 
     }, 
     likedSongs:[

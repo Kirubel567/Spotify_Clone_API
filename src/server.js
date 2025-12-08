@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const {StatusCodes} = require("http-status-codes"); 
 const dotenv = require("dotenv");
 const userRouter = require('./routes/userRoutes'); 
 //load env variables
@@ -20,6 +21,23 @@ mongoose
 app.use(express.json())
 //Routes
 app.use('/app/users', userRouter); 
+
+// Error handling middleware, now the error are being send as html element, we need to send it back as a json
+// 404
+app.use((req, res, next)=>{
+   const error = new Error("Not Found"); 
+   error.status = StatusCodes.NOT_FOUND; 
+   next(error)
+}); 
+// global error handler 
+app.use((err, req, res, next)=>{
+  res.status(err.status || StatusCodes.INTERNAL_SERVER_ERROR).json({
+    message: err.message || "Internal Server Error", 
+    status:  "error", 
+  })
+
+
+})
 //start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const {StatusCodes} = require("http-status-codes"); 
 const dotenv = require("dotenv");
 const userRouter = require('./routes/userRoutes'); 
+const artistRouter = require('./routes/artistRoutes'); 
 //load env variables
 dotenv.config();
 //Initialize app
@@ -18,10 +19,10 @@ mongoose
     console.log("error connecting to the database", err.message);
   });
 //Pass in coming data, or formerly bodyParser module 
-app.use(express.json())
+app.use(express.json())  
 //Routes
 app.use('/app/users', userRouter); 
-
+app.use('/app/artists', artistRouter)
 // Error handling middleware, now the error are being send as html element, we need to send it back as a json
 // 404
 app.use((req, res, next)=>{

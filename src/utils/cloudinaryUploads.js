@@ -15,7 +15,7 @@ const uploadToCloudinary = async (filePath, folder) => {
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     }
-    throw new Error("Failed to upload to cloudinary", error.message);
+    throw new Error("Failed to upload to cloudinary" + error.message);
   }
 };
 

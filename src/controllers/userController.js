@@ -3,6 +3,7 @@ const { StatusCodes } = require("http-status-codes");
 const User = require("../models/User");
 const { default: mongoose } = require("mongoose");
 const generateToken = require("../utils/generateToken");
+const {uploadToCloudinary} = require("../utils/cloudinaryUploads");
 //@desc - Register a new user
 //@route - POST /api/users/register
 //@Access - Public
@@ -72,7 +73,35 @@ const getUserProfile = asyncHandler(async (req, res) => {
 });
 // updateUserProfile
 const updateUserProfile = asyncHandler(async (req, res) => {
-  
+  const user = await User.findById(req.user._id);
+  const { name, email, password } = req.body;
+  if (user) {
+    user.name = name || user.name;
+    user.email = email || user.email;
+
+    // check if password is being updated
+    if (password) {
+      user.password = password;
+    }
+    //upload profile picture if provided
+    //req.file is from the middle ware multer
+    if (req.file) {
+      const result = await uploadToCloudinary(req.file.path, "spotify/users");
+      user.profilePicture = result.secure_url;
+    }
+
+    const updatedUser = await user.save();
+    res.status(StatusCodes.OK).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      profilePicture: updatedUser.profilePicture,
+      isAdmin: updatedUser.isAdmin,
+    });
+  }else{
+    res.status(StatusCodes.NOT_FOUND);
+    throw new Error("User Not Found")
+  }
 });
 //toggleLikedSong
 //toggleFollowArtist
@@ -82,4 +111,5 @@ module.exports = {
   registerUser,
   loginUser,
   getUserProfile,
+  updateUserProfile,
 };

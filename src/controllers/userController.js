@@ -54,14 +54,26 @@ const loginUser = asyncHandler(async function (req, res) {
       token: generateToken(user._id),
     });
   } else {
-    res.status(StatusCodes.UNAUTHORIZED); 
-    throw new Error("Invalid email or password"); 
+    res.status(StatusCodes.UNAUTHORIZED);
+    throw new Error("Invalid email or password");
   }
 });
 
-// get user profile 
-
+// get user profile after verifying the user has logged in (check session)
+const getUserProfile = asyncHandler(async (req, res) => {
+  //find the user
+  const user = await User.findById(req.user._id).select("-password");
+  if (user) {
+    res.status(StatusCodes.OK).json(user);
+  } else {
+    res.status(StatusCodes.NOT_FOUND);
+    throw new Error("User Not Found");
+  }
+});
 // updateUserProfile
+const updateUserProfile = asyncHandler(async (req, res) => {
+  
+});
 //toggleLikedSong
 //toggleFollowArtist
 //toggleFollowPlaylist
@@ -69,4 +81,5 @@ const loginUser = asyncHandler(async function (req, res) {
 module.exports = {
   registerUser,
   loginUser,
+  getUserProfile,
 };

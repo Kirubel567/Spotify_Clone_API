@@ -7,6 +7,11 @@ const { StatusCodes } = require("http-status-codes");
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
+  //check if a user is attaching token to the header
+  if (!req.headers.authorization) {
+    res.status(StatusCodes.UNAUTHORIZED);
+    throw new Error("No token found in the header");
+  }
   //check if the token exists in authorization header
   if (
     req.headers.authorization &&

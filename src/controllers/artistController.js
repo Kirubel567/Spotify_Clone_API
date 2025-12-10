@@ -43,6 +43,16 @@ const createArtist = asyncHandler(async (req, res) => {
   res.status(StatusCodes.CREATED).json(artists); 
 });
 
+//@desc - Get all artists with filtering and pagination
+//@route - GET /api/artist?genre=Rock&search=pink&page=1&limit=10
+//@Access - public
+
+const getArtists = asyncHandler(async(req, res)=>{
+  const {genre, search, page=1, limit=10} = req.query; 
+  //build filter object
+  
+})
 module.exports = {
-    createArtist
+    createArtist, 
+    getArtists
 }
